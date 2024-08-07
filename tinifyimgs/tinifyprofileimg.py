@@ -11,13 +11,11 @@ def resize_and_compress(input_path, output_directory):
         os.makedirs(output_directory)
 
     for filename in os.listdir(input_path):
-        if filename.endswith(".webp"):
+        if filename.endswith(".jpg"):   
             input_file = os.path.join(input_path, filename)
-            filename_without_extension, extension = os.path.splitext(filename)
-            output_filename = f"{filename_without_extension}_thumb{extension}"
-            output_file = os.path.join(output_directory, output_filename)
+            output_file = os.path.join(output_directory, f"{os.path.splitext(filename)[0]}.webp")
             source = tinify.from_file(input_file)
-            resized = source.resize(method="scale", width=500)
+            resized = source.resize(method="scale", width=1080)
             resized.to_file(output_file)
             print(f"{filename} processed")
 
