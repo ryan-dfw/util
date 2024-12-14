@@ -4,7 +4,6 @@ from secret import TINIFY_API_KEY
 
 tinify.key = TINIFY_API_KEY
 
-
 def resize_and_compress(directory):
     thumb_directory = os.path.join(directory, "thumb")
     if not os.path.exists(thumb_directory):
@@ -15,19 +14,22 @@ def resize_and_compress(directory):
             input_file = os.path.join(directory, filename)
             base_name, _ = os.path.splitext(filename)
             output_file = os.path.join(directory, f"{base_name}.webp")
+            thumbnail_file = os.path.join(thumb_directory, f"{base_name}_thumb.webp")
 
-            # Compress and save as webp
+            # Check if both the output image and thumbnail already exist
+            if os.path.exists(output_file) and os.path.exists(thumbnail_file):
+                print(f"{filename} already processed. Skipping...")
+                continue
+
+            # Process the image if not already done
             source = tinify.from_file(input_file)
             resized = source.resize(method="scale", width=1920)
             resized.to_file(output_file)
             print(f"{filename} processed")
 
-            # Create thumbnail
-            thumbnail_file = os.path.join(thumb_directory, f"{base_name}_thumb.webp")
             resized_thumbnail = resized.resize(method="scale", width=500)
             resized_thumbnail.to_file(thumbnail_file)
             print(f"{filename} thumbnailed")
-
 
 if __name__ == "__main__":
     directory_input = input("Paste the image directory path: ")
