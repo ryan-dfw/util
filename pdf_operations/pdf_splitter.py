@@ -12,8 +12,8 @@ def split_pdf(input_pdf):
 
     while True:
         try:
-            bp = input("Enter a page number to split after or type 'n' to finish: ").strip()
-            if bp.lower() == "n":
+            bp = input("Enter a page number to split after or press Enter to finish: ").strip()
+            if bp == "":
                 break
             bp = int(bp)
             if bp < 1 or bp >= total_pages:
@@ -21,7 +21,7 @@ def split_pdf(input_pdf):
             else:
                 breakpoints.append(bp)
         except ValueError:
-            print("Invalid input. Please enter a number or the letter 'n'.")
+            print("Invalid input. Please enter a number or press Enter to finish.")
 
     breakpoints = sorted(set(breakpoints))
 
